@@ -6,7 +6,7 @@
 /*   By: alvanaut <alvanaut@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:10:46 by alvanaut          #+#    #+#             */
-/*   Updated: 2025/06/30 14:48:30 by alvanaut         ###   ########.fr       */
+/*   Updated: 2025/07/02 15:14:54 by alvanaut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	init_fork(t_fork *fork, int id)
 		fork->fork_id = id;
 }
 
-void	init_philos(t_data *data)
+void init_philos(t_data *data)
 {
 	size_t	i;
 	t_philo	*philo;
@@ -80,6 +80,7 @@ void	init_philos(t_data *data)
 		philo->data = data;
 		philo->left = &data->all_forks[i];
 		philo->right = &data->all_forks[(i + 1) % data->nbr_philo];
+		pthread_mutex_init(&philo->last_meal_mutex, NULL);  // <-- init
 		i++;
 	}
 }
