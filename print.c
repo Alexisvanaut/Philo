@@ -1,3 +1,4 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -18,8 +19,7 @@ void	print_action(t_philo *philo, const char *msg)
 		return ;
 	pthread_mutex_lock(&philo->data->print_lock);
 	if (!philo->data->end_simulation)
-		printf("%ld %d %s\n",
-			get_timestamp_ms() - philo->data->start_simulation,
-			philo->id + 1, msg);
+		printf("%ld %d %s\n", get_timestamp_ms()
+			- philo->data->start_simulation, philo->id + 1, msg);
 	pthread_mutex_unlock(&philo->data->print_lock);
 }

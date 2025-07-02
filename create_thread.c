@@ -6,19 +6,19 @@
 /*   By: alvanaut <alvanaut@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 14:47:22 by alvanaut          #+#    #+#             */
-/*   Updated: 2025/07/02 15:20:35 by alvanaut         ###   ########.fr       */
+/*   Updated: 2025/07/02 15:38:40 by alvanaut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	ft_usleep(long duration)
+void	ft_usleep(long duration_ms)
 {
 	long	start;
 
 	start = get_timestamp_ms();
-	while ((get_timestamp_ms() - start) < duration)
-		usleep(100);
+	while ((get_timestamp_ms() - start) < duration_ms)
+		usleep(500);
 }
 
 int	start_simulation(t_data *data)
@@ -27,10 +27,8 @@ int	start_simulation(t_data *data)
 	pthread_t	monitor;
 
 	data->start_simulation = get_timestamp_ms();
-
 	if (pthread_create(&monitor, NULL, &death_checker, data) != 0)
 		return (1);
-
 	i = 0;
 	while (i < (size_t)data->nbr_philo)
 	{
@@ -43,14 +41,13 @@ int	start_simulation(t_data *data)
 	i = 0;
 	while (i < (size_t)data->nbr_philo)
 		pthread_join(data->all_philo[i++].thread_id, NULL);
-
 	pthread_join(monitor, NULL);
 	return (0);
 }
 
 void	destroy_all(t_data *data)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (i < (size_t)data->nbr_philo)

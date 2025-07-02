@@ -6,7 +6,7 @@
 /*   By: alvanaut <alvanaut@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:06:53 by alvanaut          #+#    #+#             */
-/*   Updated: 2025/07/02 15:05:51 by alvanaut         ###   ########.fr       */
+/*   Updated: 2025/07/02 15:38:31 by alvanaut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,26 +35,40 @@ int	ft_atoi_positive(const char *str)
 	return ((int)res);
 }
 
+static int	print_usage(char *prog_name)
+{
+	printf("Usage: %s nbr_philo time_to_die time_to_eat time_to_sleep ", 
+		prog_name);
+	printf("[limit_meals]\n");
+	return (1);
+}
+
+static int	validate_args(t_data *data, int argc)
+{
+	if (data->nbr_philo <= 0 || data->time_to_die <= 0 
+		|| data->time_to_eat <= 0 || data->time_to_sleep <= 0)
+	{
+		printf("Arguments must be strictly positive integers\n");
+		return (1);
+	}
+	if (argc == 6 && data->limit_meals <= 0)
+	{
+		printf("limit_meals must be a strictly positive integer\n");
+		return (1);
+	}
+	return (0);
+}
+
 int	parse_args(int argc, char **argv, t_data *data)
 {
 	if (argc < 5 || argc > 6)
-    return (fprintf(stderr,
-        "Usage: %s nbr_philo time_to_die time_to_eat time_to_sleep "
-        "[limit_meals]\n",
-        argv[0]), 1);
+		return (print_usage(argv[0]));
 	data->nbr_philo = ft_atoi_positive(argv[1]);
-	data->time_to_die = ft_atoi_positive(argv[2]) * 1000;
-	data->time_to_eat = ft_atoi_positive(argv[3]) * 1000;
-	data->time_to_sleep = ft_atoi_positive(argv[4]) * 1000;
+	data->time_to_die = ft_atoi_positive(argv[2]);
+	data->time_to_eat = ft_atoi_positive(argv[3]);
+	data->time_to_sleep = ft_atoi_positive(argv[4]);
 	data->limit_meals = -1;
 	if (argc == 6)
 		data->limit_meals = ft_atoi_positive(argv[5]);
-	if (data->nbr_philo <= 0 || data->time_to_die <= 0 || data->time_to_eat <= 0
-		|| data->time_to_sleep <= 0)
-		return (fprintf(stderr,
-				"Arguments must be strictly positive integers\n"), 1);
-	if (argc == 6 && data->limit_meals <= 0)
-		return (fprintf(stderr,
-				"limit_meals must be a strictly positive integer\n"), 1);
-	return (0);
+	return (validate_args(data, argc));
 }

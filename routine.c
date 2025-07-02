@@ -6,14 +6,31 @@
 /*   By: alvanaut <alvanaut@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 14:49:04 by alvanaut          #+#    #+#             */
-/*   Updated: 2025/07/02 15:19:25 by alvanaut         ###   ########.fr       */
+/*   Updated: 2025/07/02 15:40:36 by alvanaut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	philo_eat(t_philo *philo)
+long	get_timestamp_ms(void)
 {
+	struct timeval	tv;
+
+	if (gettimeofday(&tv, NULL) == -1)
+		return (-1);
+	return (tv.tv_sec * 1000L + tv.tv_usec / 1000L);
+}
+
+int	take_forks(t_philo *philo)
+{
+	if (philo->data->nbr_philo == 1)
+	{
+		pthread_mutex_lock(&philo->left->fork);
+		print_action(philo, "has taken a fork");
+		ft_usleep(philo->data->time_to_die + 1);
+		pthread_mutex_unlock(&philo->left->fork);
+		return (1);
+	}
 	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_lock(&philo->left->fork);
@@ -28,6 +45,13 @@ void	philo_eat(t_philo *philo)
 		pthread_mutex_lock(&philo->left->fork);
 		print_action(philo, "has taken a fork");
 	}
+	return (0);
+}
+
+void	philo_eat(t_philo *philo)
+{
+	if (take_forks(philo))
+		return ;
 	print_action(philo, "is eating");
 	pthread_mutex_lock(&philo->last_meal_mutex);
 	philo->last_meal_time = get_timestamp_ms();
@@ -44,7 +68,7 @@ void	*philo_routine(void *arg)
 
 	philo = (t_philo *)arg;
 	if (philo->id % 2)
-		usleep(15000);
+		usleep(900);
 	while (!philo->data->end_simulation)
 	{
 		philo_eat(philo);
@@ -60,9 +84,9 @@ void	*philo_routine(void *arg)
 
 void	*death_checker(void *arg)
 {
-	t_data	*data;
-	size_t	i;
-	long	time_since_last_meal;
+	t_data *data;
+	size_t i;
+	long time_since_last_meal;
 
 	data = (t_data *)arg;
 	while (!data->end_simulation)
@@ -88,13 +112,4 @@ void	*death_checker(void *arg)
 		usleep(1000);
 	}
 	return (NULL);
-}
-
-long	get_timestamp_ms(void)
-{
-	struct timeval	tv;
-
-	if (gettimeofday(&tv, NULL) == -1)
-		return (-1);
-	return (tv.tv_sec * 1000L + tv.tv_usec / 1000L);
 }
