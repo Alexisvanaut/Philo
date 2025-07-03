@@ -6,7 +6,7 @@
 /*   By: alvanaut <alvanaut@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 14:49:04 by alvanaut          #+#    #+#             */
-/*   Updated: 2025/07/02 15:40:36 by alvanaut         ###   ########.fr       */
+/*   Updated: 2025/07/02 18:32:25 by alvanaut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	*philo_routine(void *arg)
 
 	philo = (t_philo *)arg;
 	if (philo->id % 2)
-		usleep(900);
+		ft_usleep(1);
 	while (!philo->data->end_simulation)
 	{
 		philo_eat(philo);
@@ -82,34 +82,57 @@ void	*philo_routine(void *arg)
 	return (NULL);
 }
 
+static int	check_philo_death(t_data *data, size_t i)
+{
+	long	time_since_last_meal;
+
+	pthread_mutex_lock(&data->all_philo[i].last_meal_mutex);
+	time_since_last_meal = get_timestamp_ms()
+		- data->all_philo[i].last_meal_time;
+	pthread_mutex_unlock(&data->all_philo[i].last_meal_mutex);
+	if (time_since_last_meal > data->time_to_die)
+	{
+		data->end_simulation = true;
+		pthread_mutex_lock(&data->print_lock);
+		printf("%ld %d died\n", get_timestamp_ms() - data->start_simulation,
+			data->all_philo[i].id + 1);
+		pthread_mutex_unlock(&data->print_lock);
+		return (1);
+	}
+	return (0);
+}
+
 void	*death_checker(void *arg)
 {
 	t_data *data;
 	size_t i;
-	long time_since_last_meal;
 
 	data = (t_data *)arg;
 	while (!data->end_simulation)
 	{
 		i = 0;
-		while (i < (size_t)data->nbr_philo)
+		while (i < (size_t)data->nbr_philo && !data->end_simulation)
 		{
-			pthread_mutex_lock(&data->all_philo[i].last_meal_mutex);
-			time_since_last_meal = get_timestamp_ms()
-				- data->all_philo[i].last_meal_time;
-			pthread_mutex_unlock(&data->all_philo[i].last_meal_mutex);
-			if (time_since_last_meal > data->time_to_die)
-			{
-				data->end_simulation = true;
-				pthread_mutex_lock(&data->print_lock);
-				printf("%ld %d died\n", get_timestamp_ms()
-					- data->start_simulation, data->all_philo[i].id + 1);
-				pthread_mutex_unlock(&data->print_lock);
+			if (check_philo_death(data, i))
 				return (NULL);
-			}
 			i++;
 		}
-		usleep(1000);
+		usleep(100);
 	}
 	return (NULL);
+}
+
+int	all_philos_ate_enough(t_philo *philos, int nb_philos, int must_eat)
+{
+	int	i;
+	int	count = 0;
+
+	i = 0;
+	while (i < nb_philos)
+	{
+		if (philos[i].meals_counter >= must_eat)
+			count++;
+		i++;
+	}
+	return (count == nb_philos);
 }
