@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvanaut <alvanaut@student.s19.be>         +#+  +:+       +#+        */
+/*   By: alvanaut < alvanaut@student.s19.be >       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:10:46 by alvanaut          #+#    #+#             */
-/*   Updated: 2025/07/02 15:31:39 by alvanaut         ###   ########.fr       */
+/*   Updated: 2025/07/05 11:31:29 by alvanaut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ void	init_fork(t_fork *fork, int id)
 
 void	init_philos(t_data *data)
 {
-	size_t i;
-	t_philo *philo;
+	size_t	i;
+	t_philo	*philo;
 
 	i = 0;
 	while (i < (size_t)data->nbr_philo)

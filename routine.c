@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvanaut <alvanaut@student.s19.be>         +#+  +:+       +#+        */
+/*   By: alvanaut < alvanaut@student.s19.be >       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 14:49:04 by alvanaut          #+#    #+#             */
-/*   Updated: 2025/07/02 18:32:25 by alvanaut         ###   ########.fr       */
+/*   Updated: 2025/07/05 11:41:36 by alvanaut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	*philo_routine(void *arg)
 	return (NULL);
 }
 
-static int	check_philo_death(t_data *data, size_t i)
+int	check_philo_death(t_data *data, size_t i)
 {
 	long	time_since_last_meal;
 
@@ -100,39 +100,4 @@ static int	check_philo_death(t_data *data, size_t i)
 		return (1);
 	}
 	return (0);
-}
-
-void	*death_checker(void *arg)
-{
-	t_data *data;
-	size_t i;
-
-	data = (t_data *)arg;
-	while (!data->end_simulation)
-	{
-		i = 0;
-		while (i < (size_t)data->nbr_philo && !data->end_simulation)
-		{
-			if (check_philo_death(data, i))
-				return (NULL);
-			i++;
-		}
-		usleep(100);
-	}
-	return (NULL);
-}
-
-int	all_philos_ate_enough(t_philo *philos, int nb_philos, int must_eat)
-{
-	int	i;
-	int	count = 0;
-
-	i = 0;
-	while (i < nb_philos)
-	{
-		if (philos[i].meals_counter >= must_eat)
-			count++;
-		i++;
-	}
-	return (count == nb_philos);
 }

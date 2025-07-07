@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvanaut <alvanaut@student.s19.be>         +#+  +:+       +#+        */
+/*   By: alvanaut < alvanaut@student.s19.be >       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 00:20:27 by alvanaut          #+#    #+#             */
-/*   Updated: 2025/07/02 15:15:13 by alvanaut         ###   ########.fr       */
+/*   Updated: 2025/07/05 11:34:16 by alvanaut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,6 @@ void					*death_checker(void *arg);
 void					print_action(t_philo *philo, const char *msg);
 void					destroy_all(t_data *data);
 long					get_timestamp_ms(void);
+int						check_philo_death(t_data *data, size_t i);
 
 #endif

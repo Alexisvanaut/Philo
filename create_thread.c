@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_thread.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvanaut <alvanaut@student.s19.be>         +#+  +:+       +#+        */
+/*   By: alvanaut < alvanaut@student.s19.be >       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 14:47:22 by alvanaut          #+#    #+#             */
-/*   Updated: 2025/07/02 15:49:36 by alvanaut         ###   ########.fr       */
+/*   Updated: 2025/07/05 11:31:20 by alvanaut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ void	ft_usleep(long duration_ms)
 	{
 		elapsed = get_timestamp_ms() - start;
 		if (elapsed >= duration_ms)
-			break;
-		usleep(100); // Réduire pour plus de précision
+			break ;
+		usleep(100);
 	}
 }
 
 static void	init_philo_timestamps(t_data *data)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (i < (size_t)data->nbr_philo)
@@ -41,7 +41,7 @@ static void	init_philo_timestamps(t_data *data)
 
 static int	create_all_threads(t_data *data, pthread_t *monitor)
 {
-	size_t i;
+	size_t	i;
 
 	if (pthread_create(monitor, NULL, &death_checker, data) != 0)
 		return (1);
@@ -58,7 +58,7 @@ static int	create_all_threads(t_data *data, pthread_t *monitor)
 
 static void	join_all_threads(t_data *data, pthread_t monitor)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (i < (size_t)data->nbr_philo)
@@ -68,7 +68,7 @@ static void	join_all_threads(t_data *data, pthread_t monitor)
 
 int	start_simulation(t_data *data)
 {
-	pthread_t monitor;
+	pthread_t	monitor;
 
 	data->start_simulation = get_timestamp_ms();
 	init_philo_timestamps(data);
@@ -76,20 +76,4 @@ int	start_simulation(t_data *data)
 		return (1);
 	join_all_threads(data, monitor);
 	return (0);
-}
-
-void	destroy_all(t_data *data)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < (size_t)data->nbr_philo)
-	{
-		pthread_mutex_destroy(&data->all_forks[i].fork);
-		pthread_mutex_destroy(&data->all_philo[i].last_meal_mutex);
-		i++;
-	}
-	pthread_mutex_destroy(&data->print_lock);
-	free(data->all_forks);
-	free(data->all_philo);
 }

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: alvanaut <alvanaut@student.s19.be>         +#+  +:+       +#+         #
+#    By: alvanaut < alvanaut@student.s19.be >       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 15:02:56 by alvanaut          #+#    #+#              #
-#    Updated: 2025/07/02 15:03:05 by alvanaut         ###   ########.fr        #
+#    Updated: 2025/07/05 11:39:03 by alvanaut         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,8 @@ SRCS = main.c \
 	   create_thread.c \
 	   destroy.c \
 	   print.c \
-	   routine.c
+	   routine.c \
+	   create_thread2.c 
 
 OBJS = $(SRCS:.c=.o)
 

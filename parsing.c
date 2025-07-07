@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvanaut <alvanaut@student.s19.be>         +#+  +:+       +#+        */
+/*   By: alvanaut < alvanaut@student.s19.be >       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:06:53 by alvanaut          #+#    #+#             */
-/*   Updated: 2025/07/02 15:38:31 by alvanaut         ###   ########.fr       */
+/*   Updated: 2025/07/05 11:32:13 by alvanaut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	ft_atoi_positive(const char *str)
 
 static int	print_usage(char *prog_name)
 {
-	printf("Usage: %s nbr_philo time_to_die time_to_eat time_to_sleep ", 
+	printf("Usage: %s nbr_philo time_to_die time_to_eat time_to_sleep ",
 		prog_name);
 	printf("[limit_meals]\n");
 	return (1);
@@ -45,8 +45,8 @@ static int	print_usage(char *prog_name)
 
 static int	validate_args(t_data *data, int argc)
 {
-	if (data->nbr_philo <= 0 || data->time_to_die <= 0 
-		|| data->time_to_eat <= 0 || data->time_to_sleep <= 0)
+	if (data->nbr_philo <= 0 || data->time_to_die <= 0 || data->time_to_eat <= 0
+		|| data->time_to_sleep <= 0)
 	{
 		printf("Arguments must be strictly positive integers\n");
 		return (1);
