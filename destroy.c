@@ -6,7 +6,7 @@
 /*   By: alvanaut < alvanaut@student.s19.be >       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:31:00 by alvanaut          #+#    #+#             */
-/*   Updated: 2025/07/05 11:21:00 by alvanaut         ###   ########.fr       */
+/*   Updated: 2025/07/07 14:25:56 by alvanaut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,16 @@ void	free_forks(t_data *data)
 
 void	free_philos(t_data *data)
 {
+	size_t	i;
+
 	if (data->all_philo)
 	{
+		i = 0;
+		while (i < (size_t)data->nbr_philo)
+		{
+			pthread_mutex_destroy(&data->all_philo[i].last_meal_mutex);
+			i++;
+		}
 		free(data->all_philo);
 		data->all_philo = NULL;
 	}
@@ -47,4 +55,6 @@ void	cleanup_data(t_data *data)
 {
 	free_forks(data);
 	free_philos(data);
+	pthread_mutex_destroy(&data->end_simulation_lock);
+	pthread_mutex_destroy(&data->print_lock);
 }

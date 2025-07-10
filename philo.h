@@ -6,7 +6,7 @@
 /*   By: alvanaut < alvanaut@student.s19.be >       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 00:20:27 by alvanaut          #+#    #+#             */
-/*   Updated: 2025/07/05 11:34:16 by alvanaut         ###   ########.fr       */
+/*   Updated: 2025/07/07 14:27:02 by alvanaut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct s_data
 	t_fork				*all_forks;
 	t_philo				*all_philo;
 	pthread_mutex_t		print_lock;
+	pthread_mutex_t		end_simulation_lock;
 }						t_data;
 
 void					init_fork(t_fork *fork, int id);
@@ -79,5 +80,9 @@ void					print_action(t_philo *philo, const char *msg);
 void					destroy_all(t_data *data);
 long					get_timestamp_ms(void);
 int						check_philo_death(t_data *data, size_t i);
+bool					is_simulation_ended(t_data *data);
+void					end_simulation(t_data *data);
+int						all_philos_ate_enough(t_philo *philos, int nb_philos,
+							int must_eat);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: alvanaut < alvanaut@student.s19.be >       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 11:30:16 by alvanaut          #+#    #+#             */
-/*   Updated: 2025/07/05 11:31:05 by alvanaut         ###   ########.fr       */
+/*   Updated: 2025/07/08 14:14:49 by alvanaut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,20 @@ void	*death_checker(void *arg)
 	size_t	i;
 
 	data = (t_data *)arg;
-	while (!data->end_simulation)
+	while (!is_simulation_ended(data))
 	{
 		i = 0;
-		while (i < (size_t)data->nbr_philo && !data->end_simulation)
+		while (i < (size_t)data->nbr_philo && !is_simulation_ended(data))
 		{
 			if (check_philo_death(data, i))
 				return (NULL);
 			i++;
+		}
+		if (data->limit_meals > 0 && all_philos_ate_enough(data->all_philo,
+				data->nbr_philo, data->limit_meals))
+		{
+			end_simulation(data);
+			return (NULL);
 		}
 		usleep(100);
 	}
@@ -60,6 +66,7 @@ void	destroy_all(t_data *data)
 		i++;
 	}
 	pthread_mutex_destroy(&data->print_lock);
+	pthread_mutex_destroy(&data->end_simulation_lock);
 	free(data->all_forks);
 	free(data->all_philo);
 }

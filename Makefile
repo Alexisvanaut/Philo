@@ -6,7 +6,7 @@
 #    By: alvanaut < alvanaut@student.s19.be >       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/02 15:02:56 by alvanaut          #+#    #+#              #
-#    Updated: 2025/07/05 11:39:03 by alvanaut         ###   ########.fr        #
+#    Updated: 2025/07/08 14:21:08 by alvanaut         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ SRCS = main.c \
 	   destroy.c \
 	   print.c \
 	   routine.c \
-	   create_thread2.c 
+	   create_thread2.c
 
 OBJS = $(SRCS:.c=.o)
 

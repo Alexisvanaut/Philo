@@ -6,7 +6,7 @@
 /*   By: alvanaut < alvanaut@student.s19.be >       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 14:10:46 by alvanaut          #+#    #+#             */
-/*   Updated: 2025/07/05 11:31:29 by alvanaut         ###   ########.fr       */
+/*   Updated: 2025/07/07 14:29:08 by alvanaut         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,12 @@ int	init_mutexes(t_data *data)
 	if (pthread_mutex_init(&data->print_lock, NULL) != 0)
 	{
 		destroy_forks(data->all_forks, data->nbr_philo);
+		return (1);
+	}
+	if (pthread_mutex_init(&data->end_simulation_lock, NULL) != 0)
+	{
+		destroy_forks(data->all_forks, data->nbr_philo);
+		pthread_mutex_destroy(&data->print_lock);
 		return (1);
 	}
 	return (0);
